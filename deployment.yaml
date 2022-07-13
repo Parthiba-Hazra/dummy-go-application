@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-movies-crud-deployment
+  labels:
+    group: movies 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movie-app
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: movie-app
+        tier: backend
+    spec:
+      containers:
+        - name: movie-go
+          image: remontada007/go-movies-crud:1
+          livenessProbe:
+            httpGet:
+              path: /movies
+              port: 8000
+            periodSeconds: 10
+            initialDelaySeconds: 5
